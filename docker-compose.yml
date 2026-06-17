@@ -9,8 +9,6 @@ services:
       POSTGRES_PASSWORD: llm_studio
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"          # Remove in production if DB should be private
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U llm_studio"]
       interval: 5s
@@ -30,13 +28,11 @@ services:
       DATABASE_URL: postgresql://llm_studio:llm_studio@db:5432/llm_studio
       PORT: 3001
       NODE_ENV: production
-      # Uncomment to pre-configure the API key without touching the UI:
-      # OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
     ports:
       - "${PORT:-3001}:3001"
     env_file:
       - path: ./server/.env
-        required: false   # Optional — falls back to defaults above
+        required: false
 
 volumes:
   postgres_data:
